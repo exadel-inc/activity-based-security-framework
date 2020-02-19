@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>access-manager</artifactId>
+        <groupId>com.exadel</groupId>
+        <version>1.0-RC1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>easy-abac</artifactId>
+    <packaging>jar</packaging>
+
+    <description>Action based access control</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.exadel</groupId>
+            <artifactId>abac-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.exadel</groupId>
+            <artifactId>abac-annotation-processing</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.exadel</groupId>
+            <artifactId>abac-aspect</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>a-make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
