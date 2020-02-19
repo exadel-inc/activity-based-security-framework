@@ -1,0 +1,45 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		td, th {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 4px;
+		}
+
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+	</style>
+</head>
+<body>
+<h3>Access to the resource was denied by Easy-ABAC Framework</h3>
+<p>HTTP ERROR 403</p>
+
+<table>
+	<tr>
+		<td style="font-weight: bold">User Role</td>
+		<td th:text="${accessResponse.userRole}"></td>
+	</tr>
+	<tr>
+		<td style="font-weight: bold">Entity Identifier</td>
+		<td th:text="${accessResponse.entityId}"></td>
+	</tr>
+	<tr>
+		<td style="font-weight: bold">Resource</td>
+		<td th:text="${accessResponse.resource}"></td>
+	</tr>
+	<tr>
+		<td style="font-weight: bold">Missing Actions</td>
+		<td th:text="${accessResponse.missingActions}"></td>
+	</tr>
+</table>
+<br>
+<a href="/">Return to the Home Page</a>
+</body>
+</html>

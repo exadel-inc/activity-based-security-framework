@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>Easy-ABAC usage sample</title>
+</head>
+
+<body>
+
+<h1>
+	The example of using Easy-ABAC Framework
+</h1>
+<p>
+	Web application that demonstrates the use of Easy-ABAC Framework for managing access to RESTful service.
+	Returns HTTP Error 403 if access is denied.
+</p>
+<div>
+	We take a simplified JIRA model as an example.
+	There're 3 entity types:
+	<ul>
+		<li>Project</li>
+		<li>Story</li>
+		<li>Task</li>
+	</ul>
+	Also, there're 3 types of users which operate entities:
+	<ul>
+		<li>Administrator - has full access to projects, but read-only access to stories and tasks.</li>
+		<li>Business Analyst - has full access to stories and tasks, but read-only access to projects.</li>
+		<li>Developer - has full access to tasks, but read-only access to projects and stories.</li>
+	</ul>
+</div>
+<div>
+	Below are structure of entities with identifiers we have and their access rights:
+	<ul>
+		<li>
+			Project[id=1]
+			<ul>
+				<li>
+					Story[id=1]
+					<ul>
+						<li>Task[id=1]</li>
+						<li>Task[id=2]</li>
+					</ul>
+				</li>
+				<li>
+					Story[id=2]
+					<ul>
+						<li>Task[id=3]</li>
+						<li>Task[id=4]</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>
+			Project[id=2]
+			<ul>
+				<li>
+					Story[id=3]
+					<ul>
+						<li>Task[id=5]</li>
+						<li>Task[id=6]</li>
+					</ul>
+				</li>
+				<li>
+					Story[id=4]
+					<ul>
+						<li>Task[id=7]</li>
+						<li>Task[id=8]</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+
+	<ul>
+		<li>Administrator has access to both Project[id=1] and all their stories and tasks.</li>
+		<li>Business Analyst has access to Project[id=1], Story[id=1] and all their tasks.</li>
+		<li>Developer has access to Project[id=1], Story[id=1] and Task[id=1].</li>
+	</ul>
+</div>
+<div style="height: 40px;font-weight: bold" th:switch="${#strings.toString(authorizedUser)}">
+	<i th:case="'Administrator'">
+		You're logged as Administrator.
+	</i>
+	<i th:case="'Business Analyst'">
+		You're logged as Business Analyst.
+	</i>
+	<i th:case="'Developer'">
+		You're logged as Developer.
+	</i>
+	<i th:case="*">
+		You are not authorized. Select one of the authorization options:
+	</i>
+</div>
+<div>
+	<ul>
+		<li>
+			<a th:href="@{/logout}">Logout</a><br>
+		</li>
+		<li>
+			<a th:href="@{/login-as-admin}">Login as Administrator</a><br>
+		</li>
+		<li>
+			<a th:href="@{/login-as-ba}">Login as Business Analyst</a><br>
+		</li>
+		<li>
+			<a th:href="@{/login-as-dev}">Login as Developer</a><br>
+		</li>
+	</ul>
+</div>
+
+<h3>Test cases for calling REST service endpoints:</h3>
+<h4>Shop</h4>
+
+<ul>
+	<li>
+		<label>Get Project[1]</label>
+		<a href="/projects/1" th:text="${baseURL} + '/projects/1'"></a>
+		<br>
+		<label>Update Project[1]</label>
+		<a href="/projects/1/update" th:text="${baseURL} + '/projects/1/update'"></a>
+		<br>
+		<label>Delete Project[1]</label>
+		<a href="/projects/1/delete" th:text="${baseURL} + '/projects/1/delete'"></a>
+		<br>
+		<br>
+		<ul>
+			<li>
+				<label>Get Story[1]</label>
+				<a href="/projects/1/stories/1" th:text="${baseURL} + '/projects/1/stories/1'"></a>
+				<br>
+				<label>Update Story[1]</label>
+				<a href="/projects/1/stories/1/update" th:text="${baseURL} + '/projects/1/stories/1/update'"></a>
+				<br>
+				<br>
+				<ul>
+					<li>
+						<label>Get Task[1]</label>
+						<a href="/projects/1/stories/1/tasks/1" th:text="${baseURL} + '/projects/1/stories/1/tasks/1'"></a>
+						<br>
+						<label>Update Task[1]</label>
+						<a href="/projects/1/stories/1/tasks/1/update" th:text="${baseURL} + '/projects/1/stories/1/tasks/1/update'"></a>
+						<br>
+						<br>
+					</li>
+					<li>
+						<label>Get Task[2]</label>
+						<a href="/projects/1/stories/1/tasks/2" th:text="${baseURL} + '/projects/1/stories/1/tasks/2'"></a>
+						<br>
+						<label>Update Task[2]</label>
+						<a href="/projects/1/stories/1/tasks/2/update" th:text="${baseURL} + '/projects/1/stories/1/tasks/2/update'"></a>
+						<br>
+						<br>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<label>Get Story[2]</label>
+				<a href="/projects/1/stories/2" th:text="${baseURL} + '/projects/1/stories/2'"></a>
+				<br>
+				<label>Update Story[2]</label>
+				<a href="/projects/1/stories/2/update" th:text="${baseURL} + '/projects/1/stories/2/update'"></a>
+				<br>
+				<br>
+				<ul>
+					<li>
+						<label>Get Task[3]</label>
+						<a href="/projects/1/stories/2/tasks/3" th:text="${baseURL} + '/projects/1/stories/2/tasks/3'"></a>
+						<br>
+						<label>Update Task[3]</label>
+						<a href="/projects/1/stories/2/tasks/3/update" th:text="${baseURL} + '/projects/1/stories/2/tasks/3/update'"></a>
+						<br>
+						<br>
+					</li>
+					<li>
+						<label>Get Task[4]</label>
+						<a href="/projects/1/stories/2/tasks/4" th:text="${baseURL} + '/projects/1/stories/2/tasks/4'"></a>
+						<br>
+						<label>Update Task[4]</label>
+						<a href="/projects/1/stories/2/tasks/4/update" th:text="${baseURL} + '/projects/1/stories/2/tasks/4/update'"></a>
+						<br>
+						<br>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<label>Get Project[2]</label>
+		<a href="/projects/2" th:text="${baseURL} + '/projects/2'"></a>
+		<br>
+		<label>Update Project[2]</label>
+		<a href="/projects/2/update" th:text="${baseURL} + '/projects/2/update'"></a>
+		<br>
+		<label>Delete Project[2]</label>
+		<a href="/projects/2/delete" th:text="${baseURL} + '/projects/2/delete'"></a>
+		<br>
+		<br>
+		<ul>
+			<li>
+				<label>Get Story[3]</label>
+				<a href="/projects/2/stories/3" th:text="${baseURL} + '/projects/2/stories/3'"></a>
+				<br>
+				<label>Update Story[3]</label>
+				<a href="/projects/2/stories/3/update" th:text="${baseURL} + '/projects/2/stories/3/update'"></a>
+				<br>
+				<br>
+				<ul>
+					<li>
+						<label>Get Task[5]</label>
+						<a href="/projects/2/stories/3/tasks/5" th:text="${baseURL} + '/projects/2/stories/3/tasks/5'"></a>
+						<br>
+						<label>Update Task[5]</label>
+						<a href="/projects/2/stories/3/tasks/5/update" th:text="${baseURL} + '/projects/2/stories/3/tasks/5/update'"></a>
+						<br>
+						<br>
+					</li>
+					<li>
+						<label>Get Task[6]</label>
+						<a href="/projects/2/stories/3/tasks/6" th:text="${baseURL} + '/projects/2/stories/3/tasks/6'"></a>
+						<br>
+						<label>Update Task[6]</label>
+						<a href="/projects/12/stories/3/tasks/6/update" th:text="${baseURL} + '/projects/2/stories/3/tasks/6/update'"></a>
+						<br>
+						<br>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<label>Get Story[4]</label>
+				<a href="/projects/2/stories/4" th:text="${baseURL} + '/projects/2/stories/4'"></a>
+				<br>
+				<label>Update Story[4]</label>
+				<a href="/projects/2/stories/4/update" th:text="${baseURL} + '/projects/2/stories/4/update'"></a>
+				<br>
+				<br>
+				<ul>
+					<li>
+						<label>Get Task[7]</label>
+						<a href="/projects/2/stories/4/tasks/7" th:text="${baseURL} + '/projects/2/stories/4/tasks/7'"></a>
+						<br>
+						<label>Update Task[7]</label>
+						<a href="/projects/2/stories/4/tasks/7/update" th:text="${baseURL} + '/projects/2/stories/4/tasks/7/update'"></a>
+						<br>
+						<br>
+					</li>
+					<li>
+						<label>Get Task[8]</label>
+						<a href="/projects/2/stories/4/tasks/8" th:text="${baseURL} + '/projects/2/stories/4/tasks/8'"></a>
+						<br>
+						<label>Update Task[8]</label>
+						<a href="/projects/2/stories/4/tasks/8/update" th:text="${baseURL} + '/projects/2/stories/4/tasks/8/update'"></a>
+						<br>
+						<br>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+</body>
+</html>
