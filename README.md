@@ -7,7 +7,7 @@
 
 <div align="center">
 
-[![Maven Central](http://maven-badges.herokuapp.com/maven-central/com.exadel.security/easy-abac/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|com.exadel.security|easy-abac|1.0-RC2|)
+[![Maven Central](http://maven-badges.herokuapp.com/maven-central/com.exadel.security/easy-abac/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|com.exadel.security|easy-abac|1.0-RC3|)
 [![License](https://img.shields.io/github/license/apache/incubator-streampipes.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 </div>
@@ -16,7 +16,7 @@
 
 Latest news
 -----------
-* 01/03/2020: version 1.0-RC2 is out!
+* 09/05/2020: version 1.0-RC3 is out!
 
 What is Easy-ABAC Framework?
 ----------------------------
@@ -73,6 +73,9 @@ Framework also requires spring-context dependency for not spring-based projects:
     <artifactId>spring-context</artifactId>
 </dependency>
 ```
+
+**Components**
+![Easy-ABAC components](https://github.com/exadel-inc/activity-based-security-framework/blob/master/abac-diagram.png)
 
 **Core Attributes**
 - ```Action``` interface - to define possible actions with entity

@@ -6,7 +6,7 @@
 
     <groupId>com.exadel.security</groupId>
     <artifactId>abac-root</artifactId>
-    <version>1.0-RC2</version>
+    <version>1.0-RC3</version>
 
     <properties>
         <project.vendor>Exadel</project.vendor>
@@ -16,7 +16,7 @@
         <project.source-encoding>UTF-8</project.source-encoding>
 
         <org.aspectj.version>1.9.2</org.aspectj.version>
-        <spring.version>5.1.6.RELEASE</spring.version>
+        <spring.version>5.2.6.RELEASE</spring.version>
         <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.25</slf4j.version>
         <autoservice.version>1.0-rc5</autoservice.version>

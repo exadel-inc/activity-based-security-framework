@@ -9,7 +9,7 @@
         <relativePath>../..</relativePath>
         <groupId>com.exadel.security</groupId>
         <artifactId>abac-root</artifactId>
-        <version>1.0-RC2</version>
+        <version>1.0-RC3</version>
     </parent>
 
     <artifactId>abac-model</artifactId>

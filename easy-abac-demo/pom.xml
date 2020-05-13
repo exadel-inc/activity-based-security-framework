@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.4.RELEASE</version>
+        <version>2.3.0.RELEASE</version>
         <relativePath/>
     </parent>
 
     <groupId>com.exadel.security</groupId>
     <artifactId>easy-abac-demo</artifactId>
-    <version>1.0-RC2</version>
+    <version>1.0-RC3</version>
 
     <name>easy-abac-demo</name>
     <description>easy-abac implementation example</description>

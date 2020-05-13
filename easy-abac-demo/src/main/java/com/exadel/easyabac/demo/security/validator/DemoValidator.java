@@ -1,7 +1,24 @@
+/*
+ * Copyright 2019-2020 the original author or authors.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.exadel.easyabac.demo.security.validator;
 
 import com.exadel.easyabac.demo.exception.AccessException;
-import com.exadel.easyabac.demo.security.authorization.ActionProvider;
+import com.exadel.easyabac.demo.security.action.ActionProvider;
+import com.exadel.easyabac.demo.security.action.ActionProviderFactory;
 import com.exadel.easyabac.demo.security.authorization.DemoAuthorization;
 import com.exadel.easyabac.demo.security.model.AccessResponse;
 import com.exadel.easyabac.model.core.Action;
@@ -27,7 +44,7 @@ public class DemoValidator implements EntityAccessValidator<Action> {
     private static final String ERROR_TEMPLATE = "Access to entity[id=%s] denied.";
 
     @Autowired
-    private ActionProvider actionProvider;
+    private ActionProviderFactory actionProviderFactory;
 
     @Autowired
     private DemoAuthorization authorization;
@@ -35,7 +52,8 @@ public class DemoValidator implements EntityAccessValidator<Action> {
     @Override
     public void validate(ExecutionContext<Action> context) {
         Long entityId = context.getEntityId();
-        Set<Action> availableActions = actionProvider.getAvailableActions(entityId, context.getActionType());
+        ActionProvider provider = actionProviderFactory.getProvider(context.getActionType());
+        Set<Action> availableActions = provider.getAvailableActions(entityId);
         Set<Action> requiredActions = context.getRequiredActions();
 
         Set<Action> missingActions = SetUtils.difference(requiredActions, availableActions);
@@ -47,7 +65,7 @@ public class DemoValidator implements EntityAccessValidator<Action> {
                 authorization.getLoggedUserRole(),
                 entityId,
                 missingActions,
-                context.getJoinPoint().getSignature().toString()
+                context.getMethod()
         );
         throw new AccessException(String.format(ERROR_TEMPLATE, entityId), response);
     }
