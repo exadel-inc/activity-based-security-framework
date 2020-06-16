@@ -17,10 +17,10 @@
 package com.exadel.easyabac.aspect;
 
 import com.exadel.easyabac.model.annotation.Access;
-import com.exadel.easyabac.model.validation.EntityAccessValidator;
 import com.exadel.easyabac.model.core.Action;
+import com.exadel.easyabac.model.validation.EntityAccessValidator;
 import com.exadel.easyabac.model.validation.ExecutionContext;
-
+import org.apache.commons.collections4.CollectionUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,21 +69,36 @@ class ExecutionContextBuilder {
         Object[] arguments = point.getArgs();
         Annotation[][] parametersAnnotations = method.getParameterAnnotations();
 
-        return Stream.of(annotations)
-                .map(annotation -> getContext(annotation, arguments, parametersAnnotations, point))
+        Map<Class<? extends Annotation>, List<Annotation>> annotationsGroupedByType = Stream.of(annotations)
+                .collect(Collectors.groupingBy(Annotation::annotationType));
+
+        return annotationsGroupedByType.entrySet().stream()
+                .map(entry -> getContext(entry.getKey(), entry.getValue(), arguments, parametersAnnotations, point))
                 .collect(Collectors.toList());
     }
 
-    private ExecutionContext getContext(Annotation annotation, Object[] arguments, Annotation[][] parametersAnnotations, JoinPoint point) {
-        Object argument = AspectUtils.getMethodArgument(arguments, parametersAnnotations, annotation);
-        Action[] actions = AspectUtils.getAnnotationParameter(annotation, Access.ACTIONS_FIELD_NAME);
-        Class<EntityAccessValidator> validatorType = AspectUtils.getAnnotationParameter(annotation, Access.VALIDATOR_FIELD_NAME);
+    @SuppressWarnings("unchecked")
+    private ExecutionContext getContext(Class<? extends Annotation> annotationType, List<Annotation> annotations, Object[] arguments, Annotation[][] parametersAnnotations, JoinPoint point) {
+        Object argument = AspectUtils.getMethodArgument(arguments, parametersAnnotations, annotationType);
+
+        Set<Action> actions = annotations.stream()
+                .map(annotation -> AspectUtils.getAnnotationParameter(annotation, Access.ACTIONS_FIELD_NAME))
+                .map(Action[].class::cast)
+                .flatMap(Stream::of)
+                .collect(Collectors.toSet());
+
+        Set<Class<EntityAccessValidator>> validatorTypes = annotations.stream()
+                .map(annotation -> AspectUtils.getAnnotationParameter(annotation, Access.VALIDATOR_FIELD_NAME))
+                .map(value -> (Class<EntityAccessValidator>) value)
+                .collect(Collectors.toSet());
+
+        Class<EntityAccessValidator> validatorType = CollectionUtils.extractSingleton(validatorTypes);
         EntityAccessValidator validator = applicationContext.getBean(validatorType);
 
         DefaultExecutionContext context = new DefaultExecutionContext();
         context.setEntityId(argument);
-        context.setRequiredActions(Stream.of(actions).collect(Collectors.toSet()));
-        context.setAccessAnnotationType(annotation.annotationType());
+        context.setRequiredActions(actions);
+        context.setAccessAnnotationType(annotationType);
         context.setValidator(validator);
         context.setMethod(point.getSignature().toLongString());
         return context;

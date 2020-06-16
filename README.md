@@ -7,7 +7,7 @@
 
 <div align="center">
 
-[![Maven Central](http://maven-badges.herokuapp.com/maven-central/com.exadel.security/easy-abac/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|com.exadel.security|easy-abac|1.0-RC3|)
+[![Maven Central](http://maven-badges.herokuapp.com/maven-central/com.exadel.security/easy-abac/badge.svg?style=flat)](http://search.maven.org/#artifactdetails|com.exadel.security|easy-abac|1.1|)
 [![License](https://img.shields.io/github/license/apache/incubator-streampipes.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 </div>
@@ -16,7 +16,7 @@
 
 Latest news
 -----------
-* 09/05/2020: version 1.0-RC3 is out!
+* 17/06/2020: version 1.1 is out!
 
 What is Easy-ABAC Framework?
 ----------------------------
@@ -56,7 +56,7 @@ mvn clean install
 
 **How to use?**
 
-To start working with the **Easy-ABAC Framework** you need to add the easy-abac-{version}.jar to the classpath or add it as
+To start working with the **Easy-ABAC Framework** you need to add the easy-abac-{version}.jar to the classpath/module-path or add it as
 a maven dependency, like this:
 ```xml
 <dependency>
@@ -72,6 +72,29 @@ Framework also requires spring-context dependency for not spring-based projects:
     <groupId>org.springframework</groupId>
     <artifactId>spring-context</artifactId>
 </dependency>
+```
+
+Import framework configuration using ```@Import``` annotation:
+```java
+@SpringBootApplication
+@Import(AbacConfiguration.class)
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+```
+
+or using ```@ImportResource``` annotation:
+
+```java
+@SpringBootApplication
+@ImportResource("classpath*:abac-config.xml")
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
 ```
 
 **Components**
@@ -90,7 +113,7 @@ Let's consider simple example: you have resource (entity) ```Project```, CRUD op
 
 **1.** Define available actions for your resource. For example:
 ```java
-    public enum ProjectAction implements com.exadel.easyabac.model.Action {
+    public enum ProjectAction implements com.exadel.easyabac.model.core.Action {
         VIEW,
         UPDATE,
         CREATE,
@@ -132,7 +155,7 @@ The ```@ProjectAccess``` annotation will be used to protect REST methods. Here y
 
 **4.**: Implement the EntityAccessValidator interface for this resource, where the authorization logic is implemented:
 ```java
-    public class ProjectValidator implements com.exadel.easyabac.aspect.EntityAccessValidator<ProjectAction> {
+    public class ProjectValidator implements com.exadel.easyabac.model.validation.EntityAccessValidator<ProjectAction> {
         @Override
         public void validate(ExecutionContext<ProjectAction> context) {
             //your validation logic here

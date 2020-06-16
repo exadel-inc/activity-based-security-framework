@@ -39,11 +39,11 @@ class AspectUtils {
      *
      * @param arguments             the arguments
      * @param parametersAnnotations the parameters annotations
-     * @param annotation            the annotation
+     * @param annotationType        the annotation type
      * @return the method argument
      */
-    static Object getMethodArgument(Object[] arguments, Annotation[][] parametersAnnotations, Annotation annotation) {
-        Access access = annotation.annotationType().getAnnotation(Access.class);
+    static Object getMethodArgument(Object[] arguments, Annotation[][] parametersAnnotations, Class<? extends Annotation> annotationType) {
+        Access access = annotationType.getAnnotation(Access.class);
         Class<? extends Annotation> idAnnotationType = access.identifier();
 
         for (int i = 0; i < parametersAnnotations.length; ++i) {
