@@ -354,3 +354,22 @@ Project structure:
 	- [abac-aspect](easy-abac/abac-aspect/README.md)
 	- [abac-model](easy-abac/abac-model/README.md)
 - [easy-abac-demo](easy-abac-demo/README.md) – example
+
+## Contributing
+
+Contributions are welcomed and greatly appreciated.
+
+After creating your first contributing PR you will be requested to sign our 
+Contributor License Agreement by commenting your PR with a
+special message.
+
+### Report Bugs
+
+Report bugs at https://github.com/exadel-inc/activity-based-security-framework/issues
+
+## Contacts
+[easy-abac-support@exadel.com](mailto:easy-abac-support@exadel.com)
+
+## License info
+
+EASY-ABAC is Open Source software released under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0.html).
