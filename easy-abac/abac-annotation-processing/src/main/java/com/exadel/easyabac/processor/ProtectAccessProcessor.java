@@ -17,28 +17,27 @@
 package com.exadel.easyabac.processor;
 
 
-import static com.exadel.easyabac.processor.utils.AnnotationProcessingUtils.*;
-import static com.google.common.collect.ImmutableSet.of;
-
-import com.google.auto.service.AutoService;
-
 import com.exadel.easyabac.model.annotation.Access;
 import com.exadel.easyabac.model.annotation.ProtectedResource;
 import com.exadel.easyabac.model.annotation.PublicResource;
 import com.exadel.easyabac.processor.base.AbstractAnnotationProcessor;
 import com.exadel.easyabac.processor.utils.AnnotationProcessingUtils;
 import com.exadel.easyabac.processor.utils.ElementUtils;
-
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.google.auto.service.AutoService;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.exadel.easyabac.processor.utils.AnnotationProcessingUtils.isAnnotationPresent;
+import static com.exadel.easyabac.processor.utils.AnnotationProcessingUtils.isAnnotationPresentOnMethodOrEnclosingClass;
+import static com.google.common.collect.ImmutableSet.of;
 
 
 /**
@@ -50,6 +49,7 @@ import javax.lang.model.element.TypeElement;
  * @since 1.0-RC1
  */
 @AutoService(Processor.class)
+@SuppressWarnings("unused")
 public class ProtectAccessProcessor extends AbstractAnnotationProcessor {
 
     private static final String ERROR_MESSAGE = "Class annotated with @" + ProtectedResource.class.getName() +

@@ -16,19 +16,10 @@
 
 package com.exadel.easyabac.processor;
 
-import static com.google.common.collect.ImmutableSet.of;
-
-import com.google.auto.service.AutoService;
-
 import com.exadel.easyabac.model.annotation.Access;
 import com.exadel.easyabac.processor.base.AbstractAnnotationProcessor;
 import com.exadel.easyabac.processor.utils.ElementUtils;
-
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.google.auto.service.AutoService;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -36,6 +27,13 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.google.common.collect.ImmutableSet.of;
 
 /**
  * Annotation processor aimed to validate that annotations marked as {@code Access} have right structure.
@@ -44,6 +42,7 @@ import javax.lang.model.type.TypeKind;
  * @since 1.0-RC1
  */
 @AutoService(Processor.class)
+@SuppressWarnings("unused")
 public class AnnotationValidationProcessor extends AbstractAnnotationProcessor {
 
     private static final String METHOD_MISSING_ERROR = "%s() method is missing for @%s";

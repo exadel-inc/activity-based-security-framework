@@ -16,27 +16,13 @@
 
 package com.exadel.easyabac.processor;
 
-import static com.exadel.easyabac.processor.utils.AnnotationProcessingUtils.getAnnotationParameterMirror;
-import static com.exadel.easyabac.processor.utils.AnnotationProcessingUtils.isAnnotationPresent;
-import static com.exadel.easyabac.processor.utils.AnnotationProcessingUtils.isAnnotationPresentOnAnyMethodParameter;
-import static com.exadel.easyabac.processor.utils.AnnotationProcessingUtils.isAnnotationPresentOnMethodOrEnclosingClass;
-import static com.google.common.collect.ImmutableSet.of;
-
-import com.google.auto.service.AutoService;
-
 import com.exadel.easyabac.model.annotation.Access;
 import com.exadel.easyabac.model.annotation.PublicResource;
 import com.exadel.easyabac.processor.base.AbstractAnnotationProcessor;
 import com.exadel.easyabac.processor.utils.AnnotationProcessingUtils;
 import com.exadel.easyabac.processor.utils.ElementUtils;
-
+import com.google.auto.service.AutoService;
 import org.apache.commons.lang3.tuple.Pair;
-
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -45,6 +31,14 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.exadel.easyabac.processor.utils.AnnotationProcessingUtils.*;
+import static com.google.common.collect.ImmutableSet.of;
 
 /**
  * Annotation processor aimed to check elements annotated with {@code @Access} in conjunction with identifier-annotations.
@@ -56,6 +50,7 @@ import javax.lang.model.type.TypeMirror;
  * @since 1.0-RC1
  */
 @AutoService(Processor.class)
+@SuppressWarnings("unused")
 public class AccessAnnotationProcessor extends AbstractAnnotationProcessor {
 
     private static final String ID_ANNOTATION_MISSING_ERROR = "Methods annotated with @%s must have any parameter annotated with @%s.";
