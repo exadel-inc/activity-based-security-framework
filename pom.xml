@@ -16,7 +16,7 @@
         <project.source-encoding>UTF-8</project.source-encoding>
 
         <org.aspectj.version>1.9.6</org.aspectj.version>
-        <spring.version>5.3.2</spring.version>
+        <spring.version>6.0.0</spring.version>
         <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.25</slf4j.version>
         <autoservice.version>1.0-rc7</autoservice.version>
